@@ -1,0 +1,495 @@
+---
+title: "sta2010_MIDSEMESTERS"
+author: "Ivy Kemunto"
+date: "2023-10-16"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: sentence
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# 1. Suppose there are twelve multiple choice questions in an English class quiz. Each question has five possible answers, and only one of them is correct.
+
+## a) Identify and write the most appropriate probability distribution function for this scenario.
+
+-   The most appropriate distribution to use is a *Binomial Distribution*: This is because, each question can be considered a Bernoulli trial with a probability of success where success is getting the correct answer of 1/5, This is because there is one correct answer out of the five options available. The binomial distribution is the most suitable  for calculating the probability of a specific number of successes in a fixed number of independent Bernoulli trials.
+
+## b) Generate both the probability distribution and cumulative distribution function.
+
+```{r}
+# Number of questions
+n_questions = 12
+# Probability of success where success means getting the correct answer
+p_success = 1/5
+# Number of successes where success represents correct answers
+x = 0:n_questions
+# Probability distribution function
+probability_distribution = dbinom(x, size = n_questions, prob = p_success)
+# Cumulative distribution function
+cumulative_distribution = pbinom(x, size = n_questions, prob = p_success)
+# Create a data frame to display the results
+distribution_data = data.frame(Number_of_Correct_Answers = x, Probability = probability_distribution, Cumulative_Probability = cumulative_distribution)
+# Print the distribution data
+print(distribution_data)
+```
+
+1.  **Probability Distribution Function (PMF):**
+
+    The probability distribution function (PMF) shows the probability of getting a specific number of correct answers (successes) in a 12-question quiz, where each question has five possible answers, and only one of them is correct.
+
+    -   The probability of getting 0 correct answers is approximately 6.87%.
+
+    -   The probability of getting 1 correct answer is approximately 20.62%.
+
+    -   The probability of getting 2 correct answers is approximately 28.35%.
+
+    -   The probability of getting 3 correct answers is approximately 23.62%.
+
+    -   The probability of getting 4 correct answers is approximately 13.29%.
+
+    -   The probability of getting 5 correct answers is approximately 5.32%.
+
+    -   The probability of getting 6 correct answers is approximately 1.55%.
+
+    -   The probability of getting 7 correct answers is approximately 0.33%.
+
+    -   The probability of getting 8 correct answers is approximately 0.05%.
+
+    -   The probability of getting 9 correct answers is approximately 0.006%.
+
+    -   The probability of getting 10 correct answers is very low at approximately 0.0004%.
+
+    -   The probability of getting 11 correct answers is extremely unlikely at approximately 0.00002%.
+
+    -   The probability of getting all 12 correct answers is exceedingly rare at approximately 0.000000004%.
+
+2.  **Cumulative Distribution Function (CDF):**
+
+    The cumulative distribution function (CDF) shows the cumulative probability of getting up to a certain number of correct answers.
+    It provides insights into the likelihood of achieving a given level of success or fewer.
+
+    -   The cumulative probability of having 4 or fewer correct answers is approximately 92.74%.
+        This means that there is a 92.74% chance of getting 4 or fewer questions correct in the quiz.
+
+    -   The cumulative probability of having 7 or fewer correct answers is approximately 99.94%.
+        This indicates that nearly all students are expected to get 7 or fewer correct answers.
+
+    -   The cumulative probability of having 10 or fewer correct answers is approximately 99.998%, implying that very few students are expected to exceed 10 correct answers.
+
+## c) Find the probability of having four or less correct answers if a student attempts to answer every question at random.
+
+```{r}
+# Probability of having four or fewer correct answers
+probability_4_or_less = pbinom(4,12,1/5)
+
+# Print the result
+cat("Probability of having four or fewer correct answers:", probability_4_or_less, "\n")
+```
+
+This means that if a student guesses randomly on all 12 multiple-choice questions, there is a very high likelihood (approximately 92.74%) that they will get four or fewer of them correct.
+In other words, most students, when guessing randomly, are expected to answer four or fewer questions correctly out of the 12-question quiz.
+It indicates that random guessing alone is unlikely to result in a high score on the quiz, as there's a high probability of making at least four errors out of the 12 questions.
+
+# 2. If there are twelve cars crossing a bridge per minute on average.
+
+## a) Is this a case of probability density function or a probability mass function? Explain your response.
+
+-   This is a case of a probability mass function. A PMF is used for discrete random variables, where there are a finite number of possible outcomes. In this case, you're counting the number of cars crossing the bridge per minute, which is a discrete value. The number of cars cannot be a fraction or a continuous value; it can only take on integer values.
+
+## b) Plot both the probability distribution and cumulative distribution function.
+
+```{r}
+# Average number of cars crossing the bridge per minute
+lambda = 12
+# Number of cars (x)
+x = 0:30
+# Probability mass function (PMF)
+probability_distribution = dpois(x, lambda)
+probability_distribution
+# Cumulative distribution function (CDF)
+cumulative_distribution = ppois(x, lambda)
+cumulative_distribution
+# Plot the probability distribution
+plot(x, probability_distribution, type = "h", xlab = "Number of Cars", ylab = "Probability", main = "Poisson PMF")
+# Plot the cumulative distribution
+plot(x, cumulative_distribution, type = "s", xlab = "Number of Cars", ylab = "Cumulative Probability", main = "Poisson CDF")
+```
+
+*Probability Mass Function (PMF):*
+
+The PMF, represented by the (probability_distribution), calculates the probability of observing a specific number of cars crossing the bridge in a particular minute, ranging from 0 to 30 cars.
+Each value in the (probability_distribution) corresponds to the probability of observing that specific number of cars.
+
+For example, the probability of observing exactly 0 cars in a minute is approximately 6.144e-06, which is an extremely low probability.
+This is expected because the average rate is 12 cars per minute, and it's unlikely to observe no cars in a minute.
+As the number of observed cars increases, the probability also increases, reaching a peak around 12 cars (the average rate), and then decreases as you move further away from the average.
+This bell-shaped curve is characteristic of the Poisson distribution.
+Overall, the PMF provides a detailed breakdown of the likelihood of observing different numbers of cars in a minute.
+
+*Cumulative Distribution Function (CDF):*
+
+The CDF, represented by the (cumulative_distribution), calculates the cumulative probability of observing up to a certain number of cars in a minute.
+
+For example, cumulative_distribution[10] is approximately 0.762, which means there's a 76.2% probability of observing 10 cars or fewer in a minute.
+This makes sense because the average rate is 12 cars per minute, so it's quite likely to observe up to 10 cars.
+As the number of observed cars increases, the cumulative probability also increases and approaches 1.
+At cumulative_distribution[30], it's very close to 1, indicating a near certainty of observing 30 cars or fewer in a minute.
+The CDF shows how the cumulative probability accumulates as the number of observed cars increases.
+
+*Plots:*
+
+The two plots visually represent the PMF and CDF, providing a clear visualization of the probability distribution and cumulative probability.
+
+In the PMF plot ("Poisson PMF"), you can see the characteristic bell-shaped curve, with the peak at 12 cars (the average rate), indicating the most likely outcome.
+
+In the CDF plot ("Poisson CDF"), you observe the cumulative probability increasing smoothly from 0 to 1 as the number of cars increases, reflecting the likelihood of observing a certain number of cars or fewer in a minute.
+
+## c) Find the probability of having seventeen or more cars crossing the bridge in a particular minute.
+
+```{r}
+# Average number of cars crossing the bridge per minute
+lambda = 12
+# Number of cars
+x = 17
+# Probability of having seventeen or more cars
+probability_17_or_more = 1 - ppois(x - 1, lambda)
+# Print the result
+cat("Probability of having seventeen or more cars crossing the bridge:", probability_17_or_more, "\n")
+```
+
+This means that if, on average, there are twelve cars crossing a bridge per minute, there is still a significant probability (approximately 10.13%) that seventeen or more cars will cross the bridge in a specific minute.
+
+# 3. You are organizing a state fair raffle with 100 participants, each assigned a unique raffle ticket number from 1 to 100.
+
+## a) Identify and write the probability mass function for this scenario.
+
+-   Probability Mass Function (PMF): In this scenario, each participant has an equal chance of winning. Therefore, the probability mass function is uniform. For a raffle ticket number x, where x is between 1 and 100 (inclusive), the PMF is: P(X=x)=1/100
+
+```{r}
+#P(X = x) = 1/100 for x in {1, 2, ..., 100}
+#P(X = x) = 0 for all other values of x
+```
+
+## b) Generate both the probability distribution and cumulative distribution function.
+
+```{r}
+# Number of participants
+n_participants = 100
+
+# Probability of each raffle ticket number
+probability_distribution = rep(1/n_participants, n_participants)
+
+# Cumulative distribution function
+cumulative_distribution = cumsum(probability_distribution)
+
+# Create a data frame to display the results
+distribution_data = data.frame(Raffle_Ticket_Number = 1:n_participants, Probability = probability_distribution, Cumulative_Probability = cumulative_distribution)
+
+# Print the distribution data
+print(distribution_data)
+```
+
+1.  **Probability Distribution:**
+
+    -   The probability of each raffle ticket number is the same and equal to 1/100 (or 0.01).
+        This is because each participant has an equal chance of winning, and there are 100 participants in total.
+
+    -   The probability distribution represents the likelihood of winning associated with each raffle ticket number.
+        In this case, each ticket number has an equal probability of 0.01 of being selected as the winning ticket.
+
+2.  **Cumulative Distribution Function:**
+
+    -   The cumulative distribution function (CDF) shows the cumulative probability of winning as you go through the raffle ticket numbers.
+
+    -   As you progress through the ticket numbers, the cumulative probability increases by 0.01 for each ticket.
+
+    -   For example, the cumulative probability for the 10th ticket is 0.10 (10 \* 0.01), indicating that there is a 10% chance of winning when considering the first ten ticket numbers.
+
+    -   Similarly, the cumulative probability for the 50th ticket is 0.50 (50 \* 0.01), meaning there is a 50% chance of winning when considering the first fifty ticket numbers.
+
+**Interpretation:** The probability distribution and cumulative distribution function show that in this state fair raffle:
+
+-   Each participant has an equal chance of winning the raffle, with a probability of 0.01 (1%) for their ticket number.
+
+-   The cumulative distribution function helps participants and organizers understand the increasing likelihood of winning as more ticket numbers are considered.
+    For example, after considering the first 10 ticket numbers, the cumulative probability of winning is 10%, and it increases by 1% for each additional ticket number.
+
+## c) Find the probability that the winning raffle ticket number falls within the range of 30 to 45 (inclusive).
+
+```{r}
+# Calculate the probability of winning in the range [30, 45]
+probability_in_range = sum(probability_distribution[30:45])
+
+cat("Probability of winning in the range [30, 45]:", probability_in_range, "\n")
+
+```
+
+The probability of winning the raffle with a ticket number falling within the range of 30 to 45 (inclusive) is 0.16.
+
+**Interpretation:**
+
+-   The probability calculated here represents the likelihood of winning the raffle when the winning ticket number is between 30 and 45 (inclusive).
+    In other words, if the winning ticket number is 30, 31, 32, 33, 34, or 35, the probability of winning is 0.16 or 16%.
+
+-   This probability corresponds to the chance of having one's raffle ticket number drawn when the winning ticket number is within the specified range.
+
+# 4. In a busy urban coffee shop, on average, 12 customers walk in during a 15-minute interval.
+
+## a) Explain whether this is a case of a probability density function or a probability mass function and justify your response.
+
+-   It is a case of a probability mass function (PMF) as a PMF is appropriate when dealing with discrete random variables, where there are a finite number of possible outcomes. In this case, the number of customers can only take on integer values and is not continuous. The fact that we are counting whole customers (integers) rather than measuring a continuous quantity shows a PMF is the correct choice.
+
+## b) Plot both the probability distribution and cumulative distribution function.
+
+```{r}
+# Average number of customers entering in a 15-minute interval
+lambda = 12
+# Number of customers (x)
+x = 0:30
+# Probability mass function (PMF)
+probability_distribution = dpois(x, lambda)
+probability_distribution
+# Cumulative distribution function (CDF)
+cumulative_distribution = ppois(x, lambda)
+cumulative_distribution
+# Plot the probability distribution
+plot(x, probability_distribution, type = "h", xlab = "Number of Customers", ylab = "Probability", main = "Poisson PMF")
+# Plot the cumulative distribution
+plot(x, cumulative_distribution, type = "s", xlab = "Number of Customers", ylab = "Cumulative Probability", main = "Poisson CDF")
+```
+
+*Probability Mass Function (PMF):*
+
+The PMF, represented by the (probability_distribution), calculates the probability of observing a specific number of customers entering the coffee shop during a 15-minute interval.
+The values in the array correspond to these probabilities.
+
+For example, the probability of observing exactly 0 customers during a 15-minute interval is approximately 6.144e-06.
+This is an extremely low probability because the average rate is 12 customers in 15 minutes, so it's unlikely to observe no customers.
+As the number of observed customers increases, the probability also increases, reaching a peak around 12 customers (the average rate), and then decreases as you move further away from the average.
+The PMF provides a detailed breakdown of the likelihood of observing different numbers of customers during a 15-minute interval in the coffee shop.
+
+*Cumulative Distribution Function (CDF):*
+
+The CDF, represented by the (cumulative_distribution), calculates the cumulative probability of observing up to a certain number of customers during a 15-minute interval.
+
+For example, cumulative_distribution[10] is approximately 0.761, which means there's a 76.1% probability of observing 10 customers or fewer during a 15-minute interval.
+This makes sense because the average rate is 12 customers in 15 minutes, so it's quite likely to observe up to 10 customers.
+As the number of observed customers increases, the cumulative probability also increases and approaches 1.
+At cumulative_distribution[30], it's very close to 1, indicating a near certainty of observing 30 customers or fewer during a 15-minute interval.
+The CDF shows how the cumulative probability accumulates as the number of observed customers increases.
+
+*Plots:*
+
+The two plots visually represent the PMF and CDF, providing a clear visualization of the probability distribution and cumulative probability.
+
+In the PMF plot ("Poisson PMF"), you can see the characteristic bell-shaped curve, with the peak at 12 customers (the average rate), indicating the most likely outcome.
+In the CDF plot ("Poisson CDF"), you observe the cumulative probability increasing smoothly from 0 to 1 as the number of customers increases, reflecting the likelihood of observing a certain number of customers or fewer during a 15-minute interval.
+
+## c) Find the probability that exactly 15 customers enter the coffee shop during a 15-minute interval
+
+```{r}
+# Probability of exactly 15 customers
+probability_15_customers = dpois(15, lambda)
+
+# Print the result
+cat("Probability of exactly 15 customers:", probability_15_customers, "\n")
+```
+
+The probability of exactly 15 customers entering the coffee shop during a 15-minute interval is approximately 0.0724, or 7.24%.
+
+**Interpretation:**
+
+-   This probability value represents the likelihood of observing precisely 15 customers entering the coffee shop during a 15-minute time frame when the average customer arrival rate is 12 customers per 15 minutes.
+
+-   In a busy urban coffee shop, with an average arrival rate of 12 customers every 15 minutes, there is about a 7.24% probability that exactly 15 customers will enter during a specific 15-minute period.
+
+# 5. At a car wash, customers' waiting times follow an exponential distribution with a mean waiting time of 7 minutes.
+
+## a) Write the expression of the distribution function for this scenario and plot the probability, cumulative, and quantile distribution functions.
+PDF: The probability that a customer waits exactly \(x\) minutes is given by \(f(x) = \lambda \cdot \exp(-\lambda \cdot x)\), for \(x \geq 0\).
+In this case, \(f(x) = (1/7) \cdot \exp(- (1/7) \cdot x\).
+
+CDF: The probability that a customer waits less than or equal to \(x\) minutes is given by \(F(x) = 1 - \exp(-\lambda \cdot x)\), for \(x \geq 0\).
+In this case, \(F(x) = 1 - \exp(- (1/7) \cdot x\).
+
+QF: For a given probability \(p\), the corresponding waiting time can be found using the quantile function: \(Q(p) = -\log(1 - p) / \lambda\).
+In this case, \(Q(p) = -7 \cdot \log(1 - p)\).
+
+
+```{r}
+# Parameters
+lambda = 1/7
+# Create a sequence of x values for the plot
+x = seq(0, 1, by = 0.01)  # Adjusted range from 0 to 1
+# Probability Density Function (PDF)
+pdf_values = lambda * exp(-lambda * x)
+# Cumulative Distribution Function (CDF)
+cdf_values = 1 - exp(-lambda * x)
+# Quantile (Inverse CDF) Distribution Function
+quantile_values = -log(1 - x) / lambda
+# Plot the PDF
+plot(x, pdf_values, type = "l", xlab = "Waiting Time (minutes)", ylab = "PDF", main = "Exponential PDF")
+# Plot the CDF
+plot(x, cdf_values, type = "l", xlab = "Waiting Time (minutes)", ylab = "CDF", main = "Exponential CDF")
+# Plot the Quantile Distribution Function
+plot(x, quantile_values, type = "l", xlab = "Probability", ylab = "Quantile (Waiting Time)", main = "Exponential Quantile")
+```
+
+## b) Simulate 999 random samples of customer waiting times and create a histogram. Label the x-axis and y-axis appropriately.
+
+```{r}
+# Simulate waiting times
+set.seed(42)
+waiting_times = rexp(999, rate = lambda)
+
+# Create a histogram
+hist(waiting_times, breaks = 20, xlab = "Waiting Time (minutes)", ylab = "Frequency", main = "Customer Waiting Times")
+
+```
+
+## c) Determine the probability that a customer will wait longer than 10 minutes to get their car washed.
+
+```{r}
+# Probability of waiting longer than 10 minutes
+probability_longer_than_10_minutes <- 1 - pexp(10, rate = lambda)
+
+cat("Probability of waiting longer than 10 minutes:", probability_longer_than_10_minutes, "\n")
+
+```
+
+The probability of a customer waiting longer than 10 minutes to get their car washed at this particular car wash, where waiting times follow an exponential distribution with a mean of 7 minutes, is approximately 0.2397 or 23.97%.
+
+This means that there is a 23.97% chance that a randomly selected customer will have to wait more than 10 minutes for their car to be washed.
+
+# 6. You are conducting a quality control inspection of a factory's products. Each item has a 95% probability of passing the inspection.
+
+## a) Write the expression of the distribution function for this scenario and plot the probability, cumulative, and quantile distribution functions.
+
+-   The scenario described follows a Bernoulli distribution, where each trial (inspection) is independent and has two possible outcomes: pass (success) or fail (failure). The probability of success (passing the inspection) is p = 0.95.
+
+\[
+P(X \leq x) = \sum_{k=0}^{x} \binom{n}{k} \cdot p^k \cdot (1-p)^{n-k}
+\]
+
+- \(P(X \leq x)\) represents the probability that the random variable \(X\) is less than or equal to a specific value \(x\).
+- \(\sum_{k=0}^{x}\) denotes the summation from \(k = 0\) to \(k = x\).
+- \(\binom{n}{k}\) is the binomial coefficient, where \(n\) is the number of inspections (trials).
+- \(p\) is the probability of success for each inspection.
+- \((1-p)\) is the probability of failure for each inspection.
+
+
+```{r}
+# Probability of passing an inspection
+p_pass = 0.95
+
+# Sequence of x values for the plot
+x = c(0, 1)  # Values 0 (failure) and 1 (success)
+
+# Probability Density Function (PDF) for a Bernoulli distribution
+pdf_values = ifelse(x == 1, p_pass, 1 - p_pass)
+
+# Cumulative Distribution Function (CDF) for a Bernoulli distribution
+cdf_values = ifelse(x == 1, p_pass, 1)
+
+# Quantile (Inverse CDF) Distribution Function for a Bernoulli distribution
+quantile_values = ifelse(x >= p_pass, 1, 0)
+
+# Plot the PDF
+plot(x, pdf_values, type = "h", xlab = "Outcome (0 = Failure, 1 = Success)", ylab = "PDF", main = "Bernoulli PDF")
+
+# Plot the CDF
+plot(x, cdf_values, type = "s", xlab = "Outcome (0 = Failure, 1 = Success)", ylab = "CDF", main = "Bernoulli CDF")
+
+# Plot the Quantile Distribution Function
+plot(x, quantile_values, type = "s", xlab = "Probability", ylab = "Quantile (Outcome)", main = "Bernoulli Quantile")
+
+```
+
+## b) Simulate 999 random samples of product inspections, and construct a histogram. Clearly indicate the x and y axes.
+
+```{r}
+# Number of inspections
+n_inspections = 1000
+
+# Simulate random samples
+set.seed(42)
+random_samples = rbinom(999, n_inspections, p_pass)
+
+# Create a histogram
+hist(random_samples, breaks = seq(0, n_inspections, by = 10), xlab = "Number of Passed Inspections", ylab = "Frequency", main = "Product Inspection Results")
+
+```
+
+## c) Find the probability that at least 900 out of 1000 items pass the inspection.
+
+```{r}
+# Probability of at least 900 out of 1000 items passing the inspection
+probability_at_least_900 = 1 - pbinom(899, n_inspections, p_pass)
+
+cat("Probability of at least 900 out of 1000 items passing the inspection:", probability_at_least_900, "\n")
+
+```
+
+# 7. Suppose the IQ scores of a population follow a normal distribution with a mean of 100 and a standard deviation of 15.
+
+## a) Write the expression of the distribution function for this scenario and plot the probability, cumulative, and quantile distribution functions.
+
+$F(x) = \frac{1}{2} \left[1 + \text{erf}\left(\frac{\sigma^2}{2}(x-\mu)\right)\right]$
+
+mean (μ) of 100 and a standard deviation (σ) of 15
+
+```{r}
+# Parameters for the normal distribution
+mean_iq = 100
+sd_iq = 15
+# Sequence of x values for the plot
+x = seq(40, 160, by = 1)
+# Probability Density Function (PDF) for the normal distribution
+pdf_values = dnorm(x, mean = mean_iq, sd = sd_iq)
+# Cumulative Distribution Function (CDF) for the normal distribution
+cdf_values = pnorm(x, mean = mean_iq, sd = sd_iq)
+# Quantile (Inverse CDF) Distribution Function for the normal distribution
+quantile_values = qnorm(seq(0.01, 0.99, by = 0.01), mean = mean_iq, sd = sd_iq)
+# Plot the PDF
+plot(x, pdf_values, type = "l", xlab = "IQ Score", ylab = "PDF", main = "Normal Distribution PDF")
+# Plot the CDF
+plot(x, cdf_values, type = "l", xlab = "IQ Score", ylab = "CDF", main = "Normal Distribution CDF")
+# Plot the Quantile Distribution Function
+plot(quantile_values, seq(0.01, 0.99, by = 0.01), type = "l", xlab = "Probability", ylab = "IQ Score", main = "Normal Distribution Quantile")
+```
+
+## b) Generate 999 random IQ scores from this distribution and create a histogram. Label the x and y axes appropriately.
+
+```{r}
+# Simulate random IQ scores
+set.seed(42)
+random_iq_scores = rnorm(999, mean_iq, sd_iq)
+
+# Create a histogram
+hist(random_iq_scores, breaks = seq(40, 160, by = 5), xlab = "IQ Score", ylab = "Frequency", main = "IQ Score Distribution")
+
+```
+
+## c) Calculate the percentage of the population with an IQ score above 130.
+
+```{r}
+# Parameters for the normal distribution
+mean_iq = 100
+sd_iq = 15
+
+# IQ score threshold
+iq_threshold = 130
+
+# Calculate the percentage of the population with an IQ score above 130
+percentage_above_130 = 1 - pnorm(iq_threshold, mean = mean_iq, sd = sd_iq)
+
+cat("Percentage of the population with an IQ score above 130:", percentage_above_130 * 100, "%\n")
+
+
+```
+Interpretation:
+The percentage of the population with an IQ score above 130 is approximately 2.275%. This means that only about 2.275% of the population has an IQ score greater than 130, indicating that a relatively small proportion of the population falls into this high-IQ range.
